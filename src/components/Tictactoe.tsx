@@ -10,6 +10,7 @@ export default () => {
     const[count, setCount] = useState(0)
     const[lock, setLock] = useState(false)
     const [data, setData] = useState(initialData)
+    const [winningLine, setWinningLine] = useState<number[] | null>(null)
 
     const toggle = (e: any, num: any) => {
         if (lock || data[num] !== '') {
@@ -41,6 +42,7 @@ export default () => {
         for (let pattern of winPatterns) {
             const [a, b, c] = pattern
             if (newData[a] && newData[a] === newData[b] && newData[a] === newData[c]) {
+                setWinningLine([a, b, c])
                 won()
                 return
             }
@@ -55,6 +57,7 @@ export default () => {
         setData(initialData)
         setCount(0)
         setLock(false)
+        setWinningLine(null)
         const boxes = document.querySelectorAll('.boxes')
         boxes.forEach((box: any) => (box.innerHTML = ''))
     }
@@ -62,21 +65,21 @@ export default () => {
     return(
         <div className='container'>
             <h1 className='title'>Tic Tac Toe Game</h1>
-            <div className='board'>
-                <div className='row1'>
-                    <div className="boxes" onClick={(e:any) => {toggle(e,0)}}></div>
-                    <div className="boxes" onClick={(e:any) => {toggle(e,1)}}></div>
-                    <div className="boxes" onClick={(e:any) => {toggle(e,2)}}></div>
+            <div className="board">
+                <div className="row1">
+                    <div className={`boxes ${winningLine?.includes(0) ? 'flash' : ''}`} onClick={(e: any) => toggle(e, 0)}></div>
+                    <div className={`boxes ${winningLine?.includes(1) ? 'flash' : ''}`} onClick={(e: any) => toggle(e, 1)}></div>
+                    <div className={`boxes ${winningLine?.includes(2) ? 'flash' : ''}`} onClick={(e: any) => toggle(e, 2)}></div>
                 </div>
-                <div className='row2'>
-                    <div className="boxes" onClick={(e:any) => {toggle(e,3)}}></div>
-                    <div className="boxes" onClick={(e:any) => {toggle(e,4)}}></div>
-                    <div className="boxes" onClick={(e:any) => {toggle(e,5)}}></div>
+                <div className="row2">
+                    <div className={`boxes ${winningLine?.includes(3) ? 'flash' : ''}`} onClick={(e: any) => toggle(e, 3)}></div>
+                    <div className={`boxes ${winningLine?.includes(4) ? 'flash' : ''}`} onClick={(e: any) => toggle(e, 4)}></div>
+                    <div className={`boxes ${winningLine?.includes(5) ? 'flash' : ''}`} onClick={(e: any) => toggle(e, 5)}></div>
                 </div>
-                <div className='row3'>
-                    <div className="boxes" onClick={(e:any) => {toggle(e,6)}}></div>
-                    <div className="boxes" onClick={(e:any) => {toggle(e,7)}}></div>
-                    <div className="boxes" onClick={(e:any) => {toggle(e,8)}}></div>
+                <div className="row3">
+                    <div className={`boxes ${winningLine?.includes(6) ? 'flash' : ''}`} onClick={(e: any) => toggle(e, 6)}></div>
+                    <div className={`boxes ${winningLine?.includes(7) ? 'flash' : ''}`} onClick={(e: any) => toggle(e, 7)}></div>
+                    <div className={`boxes ${winningLine?.includes(8) ? 'flash' : ''}`} onClick={(e: any) => toggle(e, 8)}></div>
                 </div>
             </div>
             <button className='resert' onClick={resetGame}> Reset</button>
